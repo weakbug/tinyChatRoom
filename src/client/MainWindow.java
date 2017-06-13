@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 public class MainWindow {
 
-	private JFrame frame;
+	private JFrame frmTinychatroom;
 
 	/**
 	 * Launch the application.
@@ -16,7 +16,7 @@ public class MainWindow {
 			public void run() {
 				try {
 					MainWindow window = new MainWindow();
-					window.frame.setVisible(true);
+					window.frmTinychatroom.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -35,9 +35,10 @@ public class MainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmTinychatroom = new JFrame();
+		frmTinychatroom.setTitle("tinyChatRoom");
+		frmTinychatroom.setBounds(100, 100, 700, 400);
+		frmTinychatroom.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 }
