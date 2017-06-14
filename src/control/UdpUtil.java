@@ -12,17 +12,23 @@ public class UdpUtil {
 	
 	private static MulticastSocket ds;
 	private static final String multicastHost="224.0.0.1";
-	private static InetAddress receiveAddress;
+	private static InetAddress address;
 	private ThreadCallBack tCallBack;
 	
-	public UdpUtil() {
+	private UdpUtil() {
 		try {
+			address = InetAddress.getByName(multicastHost);  
 			ds = new MulticastSocket(8004);
+			ds.setTimeToLive(4);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * 实例初始化时传入接口实例
+	 * @param tcb ThreadCallBack接口的实例
+	 */
 	public UdpUtil(ThreadCallBack tcb) {
 		super();
 		tCallBack = tcb;
@@ -34,11 +40,13 @@ public class UdpUtil {
 		}
 	}
 	
+	/**
+	 * 开始监听udp广播
+	 */
 	public void startUdpReceive() {
 		try {  
             ds = new MulticastSocket(8004);  
-            receiveAddress = InetAddress.getByName(multicastHost);  
-            ds.joinGroup(receiveAddress);  
+            ds.joinGroup(address);  
             new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -63,7 +71,18 @@ public class UdpUtil {
 	}
 	
 	public void sendUdpPacket(String msg) {
-		
+		byte[] data = msg.getBytes();
+		final DatagramPacket dataPacket = new DatagramPacket(data, data.length, address, 8004);
+		new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ds.send(dataPacket);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 	}
 
 }

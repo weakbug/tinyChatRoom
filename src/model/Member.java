@@ -14,7 +14,7 @@ public class Member {
 		this.account 	= account;
 		this.password 	= password;
 		this.nickname 	= nickname;
-		this.ip 		= ip;
+		this.ip 				= ip;
 		this.publicKey 	= publicKey;
 	}
 	

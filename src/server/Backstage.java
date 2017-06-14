@@ -8,9 +8,9 @@ import java.net.MulticastSocket;
 import control.*;
 import model.*;
 
-public class Backstage implements ThreadCallBack{
+public class Backstage implements ThreadCallBack {
 	
-	
+	private List<Member> 
 	private UdpUtil udpUtil;
 	
 	public Backstage() {

@@ -21,7 +21,7 @@ public class MainWindow {
 
 	private JFrame frmTinychatroomServer;
 	private JTable member_detail_table;
-	private JScrollPane scrollPane_1;
+	private JScrollPane outputArea_scrollPane;
 	private JTextArea server_outputArea;
 	private JTextField system_broadcast_inputArea;
 	private JButton system_broadcast_button;
@@ -75,29 +75,29 @@ public class MainWindow {
         
         Vector<Vector<String>> dataVec = new Vector<Vector<String>>(); 
 		
-		JScrollPane scrollPane = new JScrollPane();
-		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 10, SpringLayout.NORTH, frmTinychatroomServer.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 10, SpringLayout.WEST, frmTinychatroomServer.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, 220, SpringLayout.NORTH, frmTinychatroomServer.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane, -10, SpringLayout.EAST, frmTinychatroomServer.getContentPane());
-		frmTinychatroomServer.getContentPane().add(scrollPane);
+		JScrollPane member_scrollPane = new JScrollPane();
+		springLayout.putConstraint(SpringLayout.NORTH, member_scrollPane, 10, SpringLayout.NORTH, frmTinychatroomServer.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, member_scrollPane, 10, SpringLayout.WEST, frmTinychatroomServer.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, member_scrollPane, 220, SpringLayout.NORTH, frmTinychatroomServer.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, member_scrollPane, -10, SpringLayout.EAST, frmTinychatroomServer.getContentPane());
+		frmTinychatroomServer.getContentPane().add(member_scrollPane);
 		
 		member_detail_table = new JTable(dataVec, colHeader);
-		scrollPane.setViewportView(member_detail_table);
+		member_scrollPane.setViewportView(member_detail_table);
 		
-		scrollPane_1 = new JScrollPane();
-		springLayout.putConstraint(SpringLayout.NORTH, scrollPane_1, 6, SpringLayout.SOUTH, scrollPane);
-		springLayout.putConstraint(SpringLayout.WEST, scrollPane_1, 10, SpringLayout.WEST, frmTinychatroomServer.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane_1, -41, SpringLayout.SOUTH, frmTinychatroomServer.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane_1, -10, SpringLayout.EAST, frmTinychatroomServer.getContentPane());
-		frmTinychatroomServer.getContentPane().add(scrollPane_1);
+		outputArea_scrollPane = new JScrollPane();
+		springLayout.putConstraint(SpringLayout.NORTH, outputArea_scrollPane, 6, SpringLayout.SOUTH, member_scrollPane);
+		springLayout.putConstraint(SpringLayout.WEST, outputArea_scrollPane, 10, SpringLayout.WEST, frmTinychatroomServer.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, outputArea_scrollPane, -41, SpringLayout.SOUTH, frmTinychatroomServer.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, outputArea_scrollPane, -10, SpringLayout.EAST, frmTinychatroomServer.getContentPane());
+		frmTinychatroomServer.getContentPane().add(outputArea_scrollPane);
 		
 		server_outputArea = new JTextArea();
 		server_outputArea.setLineWrap(true);
-		scrollPane_1.setViewportView(server_outputArea);
+		outputArea_scrollPane.setViewportView(server_outputArea);
 		
 		system_broadcast_inputArea = new JTextField();
-		springLayout.putConstraint(SpringLayout.NORTH, system_broadcast_inputArea, 10, SpringLayout.SOUTH, scrollPane_1);
+		springLayout.putConstraint(SpringLayout.NORTH, system_broadcast_inputArea, 10, SpringLayout.SOUTH, outputArea_scrollPane);
 		springLayout.putConstraint(SpringLayout.WEST, system_broadcast_inputArea, 10, SpringLayout.WEST, frmTinychatroomServer.getContentPane());
 		frmTinychatroomServer.getContentPane().add(system_broadcast_inputArea);
 		system_broadcast_inputArea.setColumns(10);
@@ -105,7 +105,7 @@ public class MainWindow {
 		system_broadcast_button = new JButton("Send");
 		springLayout.putConstraint(SpringLayout.SOUTH, system_broadcast_button, -10, SpringLayout.SOUTH, frmTinychatroomServer.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, system_broadcast_inputArea, -6, SpringLayout.WEST, system_broadcast_button);
-		springLayout.putConstraint(SpringLayout.EAST, system_broadcast_button, 0, SpringLayout.EAST, scrollPane);
+		springLayout.putConstraint(SpringLayout.EAST, system_broadcast_button, 0, SpringLayout.EAST, member_scrollPane);
 		frmTinychatroomServer.getContentPane().add(system_broadcast_button);
 	}
 }
