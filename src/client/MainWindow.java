@@ -54,41 +54,41 @@ public class MainWindow {
 		SpringLayout springLayout = new SpringLayout();
 		frmTinychatroom.getContentPane().setLayout(springLayout);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 10, SpringLayout.NORTH, frmTinychatroom.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 149, SpringLayout.WEST, frmTinychatroom.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -96, SpringLayout.SOUTH, frmTinychatroom.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane, -10, SpringLayout.EAST, frmTinychatroom.getContentPane());
-		frmTinychatroom.getContentPane().add(scrollPane);
+		JScrollPane chat_window_scrollPane = new JScrollPane();
+		springLayout.putConstraint(SpringLayout.NORTH, chat_window_scrollPane, 10, SpringLayout.NORTH, frmTinychatroom.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, chat_window_scrollPane, 149, SpringLayout.WEST, frmTinychatroom.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, chat_window_scrollPane, -96, SpringLayout.SOUTH, frmTinychatroom.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, chat_window_scrollPane, -10, SpringLayout.EAST, frmTinychatroom.getContentPane());
+		frmTinychatroom.getContentPane().add(chat_window_scrollPane);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		springLayout.putConstraint(SpringLayout.NORTH, scrollPane_1, 10, SpringLayout.SOUTH, scrollPane);
-		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane_1, -10, SpringLayout.SOUTH, frmTinychatroom.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane_1, -109, SpringLayout.EAST, frmTinychatroom.getContentPane());
-		frmTinychatroom.getContentPane().add(scrollPane_1);
+		JScrollPane inputArea_scrollPane = new JScrollPane();
+		springLayout.putConstraint(SpringLayout.NORTH, inputArea_scrollPane, 10, SpringLayout.SOUTH, chat_window_scrollPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, inputArea_scrollPane, -10, SpringLayout.SOUTH, frmTinychatroom.getContentPane());
+		frmTinychatroom.getContentPane().add(inputArea_scrollPane);
 		
-		JScrollPane scrollPane_2 = new JScrollPane();
-		springLayout.putConstraint(SpringLayout.WEST, scrollPane_1, 6, SpringLayout.EAST, scrollPane_2);
-		springLayout.putConstraint(SpringLayout.NORTH, scrollPane_2, 10, SpringLayout.NORTH, frmTinychatroom.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane_2, -10, SpringLayout.SOUTH, frmTinychatroom.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, scrollPane_2, 10, SpringLayout.WEST, frmTinychatroom.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane_2, -6, SpringLayout.WEST, scrollPane);
-		frmTinychatroom.getContentPane().add(scrollPane_2);
+		JScrollPane member_list_scrollPane = new JScrollPane();
+		springLayout.putConstraint(SpringLayout.WEST, inputArea_scrollPane, 6, SpringLayout.EAST, member_list_scrollPane);
+		springLayout.putConstraint(SpringLayout.NORTH, member_list_scrollPane, 10, SpringLayout.NORTH, frmTinychatroom.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, member_list_scrollPane, -10, SpringLayout.SOUTH, frmTinychatroom.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, member_list_scrollPane, 10, SpringLayout.WEST, frmTinychatroom.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, member_list_scrollPane, -6, SpringLayout.WEST, chat_window_scrollPane);
+		frmTinychatroom.getContentPane().add(member_list_scrollPane);
 		
 		JList member_list = new JList();
-		scrollPane_2.setViewportView(member_list);
+		member_list_scrollPane.setViewportView(member_list);
 		
-		JButton btnNewButton = new JButton("New button");
-		springLayout.putConstraint(SpringLayout.NORTH, btnNewButton, 0, SpringLayout.NORTH, scrollPane_1);
-		springLayout.putConstraint(SpringLayout.WEST, btnNewButton, 6, SpringLayout.EAST, scrollPane_1);
-		frmTinychatroom.getContentPane().add(btnNewButton);
+		JButton settings_button = new JButton("Settings");
+		springLayout.putConstraint(SpringLayout.NORTH, settings_button, 11, SpringLayout.SOUTH, chat_window_scrollPane);
+		springLayout.putConstraint(SpringLayout.EAST, inputArea_scrollPane, -6, SpringLayout.WEST, settings_button);
+		springLayout.putConstraint(SpringLayout.EAST, settings_button, 0, SpringLayout.EAST, chat_window_scrollPane);
+		frmTinychatroom.getContentPane().add(settings_button);
 		
-		JButton btnNewButton_1 = new JButton("New button");
-		springLayout.putConstraint(SpringLayout.SOUTH, btnNewButton_1, 0, SpringLayout.SOUTH, scrollPane_1);
+		JButton send_button = new JButton("Send");
+		springLayout.putConstraint(SpringLayout.SOUTH, send_button, -10, SpringLayout.SOUTH, frmTinychatroom.getContentPane());
 		
 		JTextArea client_inputArea = new JTextArea();
-		scrollPane_1.setViewportView(client_inputArea);
-		springLayout.putConstraint(SpringLayout.EAST, btnNewButton_1, 0, SpringLayout.EAST, scrollPane);
-		frmTinychatroom.getContentPane().add(btnNewButton_1);
+		inputArea_scrollPane.setViewportView(client_inputArea);
+		springLayout.putConstraint(SpringLayout.EAST, send_button, 0, SpringLayout.EAST, chat_window_scrollPane);
+		frmTinychatroom.getContentPane().add(send_button);
 	}
 }

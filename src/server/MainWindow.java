@@ -98,7 +98,7 @@ public class MainWindow {
 		frmTinychatroomServer.getContentPane().add(system_broadcast_inputArea);
 		system_broadcast_inputArea.setColumns(10);
 		
-		system_broadcast_button = new JButton("New button");
+		system_broadcast_button = new JButton("Send");
 		springLayout.putConstraint(SpringLayout.SOUTH, system_broadcast_button, -10, SpringLayout.SOUTH, frmTinychatroomServer.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, system_broadcast_inputArea, -6, SpringLayout.WEST, system_broadcast_button);
 		springLayout.putConstraint(SpringLayout.EAST, system_broadcast_button, 0, SpringLayout.EAST, scrollPane);
