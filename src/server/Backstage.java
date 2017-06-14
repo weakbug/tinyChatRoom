@@ -4,13 +4,15 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.ArrayList;
+import java.util.List;
 
 import control.*;
 import model.*;
 
 public class Backstage implements ThreadCallBack {
 	
-	private List<Member> 
+	private List<Member> loginList;
 	private UdpUtil udpUtil;
 	
 	public Backstage() {
@@ -18,9 +20,8 @@ public class Backstage implements ThreadCallBack {
 	}
 	
 	private void initialize() {
-		/*
-		 * 启动UDP接收线程。
-		 */
+		loginList = new ArrayList<Member>();
+		// 启动UDP接收线程。
 		udpUtil = new UdpUtil(this);
 		udpUtil.startUdpReceive();
 	}

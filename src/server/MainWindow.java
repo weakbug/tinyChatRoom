@@ -1,12 +1,16 @@
 package server;
 
 import java.awt.EventQueue;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.BoxLayout;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
+
+import model.*;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -19,12 +23,13 @@ import javax.swing.JButton;
  */
 public class MainWindow {
 
-	private JFrame frmTinychatroomServer;
-	private JTable member_detail_table;
-	private JScrollPane outputArea_scrollPane;
-	private JTextArea server_outputArea;
-	private JTextField system_broadcast_inputArea;
-	private JButton system_broadcast_button;
+	private JFrame 		frmTinychatroomServer;
+	private JTable 			member_detail_table;
+	private JScrollPane 	outputArea_scrollPane;
+	private JTextArea 	server_outputArea;
+	private JTextField 	system_broadcast_inputArea;
+	private JButton 		system_broadcast_button;
+	private Backstage 	backstage;
 
 	/**
 	 * Launch the application.
@@ -107,5 +112,14 @@ public class MainWindow {
 		springLayout.putConstraint(SpringLayout.EAST, system_broadcast_inputArea, -6, SpringLayout.WEST, system_broadcast_button);
 		springLayout.putConstraint(SpringLayout.EAST, system_broadcast_button, 0, SpringLayout.EAST, member_scrollPane);
 		frmTinychatroomServer.getContentPane().add(system_broadcast_button);
+		//实例化后台类并自动初始化Udp
+		backstage = new Backstage();
+	}
+	
+	/**
+	 * 刷新列表
+	 */
+	public void list_refresh(List<Member> member_list) {
+		
 	}
 }
