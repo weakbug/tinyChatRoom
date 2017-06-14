@@ -81,18 +81,16 @@ public class MainWindow {
 		JList member_list = new JList();
 		member_list_scrollPane.setViewportView(member_list);
 		
-		JButton settings_button = new JButton("Settings");
-		springLayout.putConstraint(SpringLayout.NORTH, settings_button, 11, SpringLayout.SOUTH, chat_window_scrollPane);
-		springLayout.putConstraint(SpringLayout.EAST, inputArea_scrollPane, -6, SpringLayout.WEST, settings_button);
-		springLayout.putConstraint(SpringLayout.EAST, settings_button, 0, SpringLayout.EAST, chat_window_scrollPane);
-		frmTinychatroom.getContentPane().add(settings_button);
-		
 		JButton send_button = new JButton("Send");
+		springLayout.putConstraint(SpringLayout.EAST, inputArea_scrollPane, -6, SpringLayout.WEST, send_button);
 		springLayout.putConstraint(SpringLayout.SOUTH, send_button, -10, SpringLayout.SOUTH, frmTinychatroom.getContentPane());
 		
 		JTextArea client_inputArea = new JTextArea();
 		inputArea_scrollPane.setViewportView(client_inputArea);
 		springLayout.putConstraint(SpringLayout.EAST, send_button, 0, SpringLayout.EAST, chat_window_scrollPane);
+		
+		JTextArea chat_textArea = new JTextArea();
+		chat_window_scrollPane.setViewportView(chat_textArea);
 		frmTinychatroom.getContentPane().add(send_button);
 	}
 }

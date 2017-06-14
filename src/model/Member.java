@@ -4,16 +4,14 @@ import java.net.InetAddress;
 
 public class Member {
 
-	private String account;
-	private String password;
 	private String nickname;
+	private String password;
 	private String ip;
 	private String publicKey;
 	
-	public Member(String account, String password, String nickname, String ip, String publicKey) {
-		this.account 	= account;
-		this.password 	= password;
+	public Member(String nickname, String password, String ip, String publicKey) {
 		this.nickname 	= nickname;
+		this.password 	= password;
 		this.ip 				= ip;
 		this.publicKey 	= publicKey;
 	}

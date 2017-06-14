@@ -23,7 +23,6 @@ public class Backstage implements ThreadCallBack {
 		loginList = new ArrayList<Member>();
 		// 启动UDP接收线程。
 		udpUtil = new UdpUtil(this);
-		udpUtil.startUdpReceive();
 	}
 	
 	/**

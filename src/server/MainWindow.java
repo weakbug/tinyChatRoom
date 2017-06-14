@@ -72,9 +72,8 @@ public class MainWindow {
 		frmTinychatroomServer.getContentPane().setLayout(springLayout);
 		
 		Vector<String> colHeader = new Vector<String>(); 
-        colHeader.add("account"); 
-        colHeader.add("password"); 
         colHeader.add("nickname"); 
+        colHeader.add("password"); 
         colHeader.add("ip"); 
         colHeader.add("publicKey"); //Ô¤Áô£¬ÓÃÓÚ¼ÓÃÜË½ÁÄ
         
