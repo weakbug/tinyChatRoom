@@ -1,7 +1,9 @@
 package model;
 
+import java.net.InetAddress;
+
 public class Member {
-	
+
 	private String account;
 	private String password;
 	private String nickname;
@@ -15,5 +17,7 @@ public class Member {
 		this.ip 		= ip;
 		this.publicKey 	= publicKey;
 	}
+	
+	
 
 }

@@ -10,6 +10,10 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JTextArea;
 
+/**
+ * @author Shinrai
+ * 客户端聊天窗口
+ */
 public class MainWindow {
 
 	private JFrame frmTinychatroom;

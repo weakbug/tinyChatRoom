@@ -13,6 +13,10 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 
+/**
+ * @author Shinrai
+ * 服务端显示窗口。
+ */
 public class MainWindow {
 
 	private JFrame frmTinychatroomServer;

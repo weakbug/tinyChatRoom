@@ -10,6 +10,10 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 
+/**
+ * @author Shinrai
+ * ¿Í»§¶ËµÇÂ¼´°¿Ú
+ */
 public class LoginWindow {
 
 	private JFrame frmLogin;
