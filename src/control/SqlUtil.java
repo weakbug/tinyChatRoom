@@ -1,6 +1,8 @@
 package control;
 
 import java.sql.*;
+
+import model.Member;
 public class SqlUtil {
 	private static Connection conn;
 	private static Statement stat;
@@ -17,20 +19,38 @@ public class SqlUtil {
 							   "(NICKNAME TEXT PRIMARY KEY  NOT NULL ,"+
 							   "PASSWORD CHAR(20)                 NOT NULL )";
 			stat.executeUpdate(sql);
-			addUser("test","test");//∆Ù∂Ø ±ƒ¨»œÃÌº”≤‚ ‘’ ∫≈
+			Member test = new Member("test","test","test","test");
+			addUser(test);//∆Ù∂Ø ±ƒ¨»œÃÌº”≤‚ ‘’ ∫≈
 			selectAllUser();//œ‘ æÀ˘”–’ ∫≈º∞√‹¬Î
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}
-	//ÃÌº”’ ∫≈Í«≥∆º∞√‹¬Î
-	public static void addUser(String nickName,String password){
+	public static void init(){
 		try{
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:test.db");
 			System.out.println("opened database successfully");
+			
 			stat = conn.createStatement();
+			String sql = "CREATE TABLE  IF NOT EXISTS USERINFO"+
+							   "(NICKNAME TEXT PRIMARY KEY  NOT NULL ,"+
+							   "PASSWORD CHAR(20)                 NOT NULL )";
+			stat.executeUpdate(sql);
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	//ÃÌº”’ ∫≈Í«≥∆º∞√‹¬Î
+	public static void addUser(Member member){
+		try{
+			Class.forName("org.sqlite.JDBC");
+			conn = DriverManager.getConnection("jdbc:sqlite:test.db");
+			stat = conn.createStatement();
+			String nickName = member.getNickname();
+			String password = member.getPassword();
 //			String sql = "INSERT INTO USERINFO(NICKNAME,PASSWORD) "+
 //								"VALUES(?,?,?,?);";
 			String sql = "INSERT INTO USERINFO(NICKNAME,PASSWORD) "+
@@ -55,7 +75,6 @@ public class SqlUtil {
 		try{
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:test.db");
-			System.out.println("opened database successfully");
 			stat = conn.createStatement();
 			
 			ResultSet rs=stat.executeQuery("select * from USERINFO WHERE NICKNAME = '"+nickName+"'");
@@ -75,7 +94,6 @@ public class SqlUtil {
 		try{
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:test.db");
-			System.out.println("opened database successfully");
 			stat = conn.createStatement();
 			
 			ResultSet rs=stat.executeQuery("select * from UserInfo");
@@ -96,7 +114,6 @@ public class SqlUtil {
 		try{
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:test.db");
-			System.out.println("opened database successfully");
 			stat = conn.createStatement();
 		    String sql = "DELETE from USERINFO WHERE NICKNAME = '"+nickName+"'";
 		    stat.executeUpdate(sql);
@@ -112,7 +129,6 @@ public class SqlUtil {
 		try{
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:test.db");
-			System.out.println("opened database successfully");
 			stat = conn.createStatement();
 		    String sql = "UPDATE USERINFO set PASSWORD='"+password+"',"+
 		    													" where NICKNAME= '"+nickName+"'";
