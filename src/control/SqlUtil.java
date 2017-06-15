@@ -2,9 +2,9 @@ package control;
 
 import java.sql.*;
 public class SqlUtil {
-	static Connection conn;
-	static Statement stat;
-	static PreparedStatement ps = null;
+	private static Connection conn;
+	private static Statement stat;
+	private static PreparedStatement ps = null;
 	public static void main(String args[]){
 		
 		try{

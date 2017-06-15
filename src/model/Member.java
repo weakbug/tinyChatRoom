@@ -9,7 +9,7 @@ public class Member {
 	private String nickname;
 	private String password;
 	private String ipAddress;
-	private RsaUtil rsaUtil;
+	private String publicKey;
 	private boolean isLogin;
 	
 	/**
@@ -18,10 +18,9 @@ public class Member {
 	 * @param password
 	 * @param ipAddress
 	 */
-	public Member(String nickname, String password, String ipAddress) {
-		/** 实例化时生成rsa实例 */
-		rsaUtil = new RsaUtil();
+	public Member(String nickname, String password, String ipAddress, String publicKey) {
 		isLogin = false;
+		this.publicKey = publicKey;
 		this.nickname 	= nickname;
 		this.password 	= password;
 		this.ipAddress 	= ipAddress;
@@ -60,8 +59,8 @@ public class Member {
 	public String getIpAddress() {
 		return ipAddress;
 	}
-	public RsaUtil getRsaUtil() {
-		return rsaUtil;
+	public String getPublicKey() {
+		return publicKey;
 	}
 	public boolean isLogin() {
 		return isLogin;
