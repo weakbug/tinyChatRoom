@@ -1,6 +1,8 @@
 package control;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -22,9 +24,13 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.binary.Base64;
 
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
 /**
  * @see http://www.cnblogs.com/SirSmith/p/4990183.html
  * @since 2015-11-24 00:22
+ * modified by shinrai 2017-6-15 14:12:26
  */
 public class RsaUtil {
     public static final String KEY_ALGORITHM = "RSA";
@@ -34,23 +40,26 @@ public class RsaUtil {
     public static final String PRIVATE_KEY = "privateKey";
 
     /** RSA密钥长度必须是64的倍数，在512~65536之间。默认是1024 */
-    public static final int KEY_SIZE = 512;//modified
+    public static final int KEY_SIZE = 512;
+    
+    /** 生成的秘钥对 */
+    private PublicKey publicKey;
+    private PrivateKey privateKey;
 
-    public static final String PLAIN_TEXT = "MANUTD is the greatest club in the world";
-
-    public static void main(String[] args) {
-        Map<String, byte[]> keyMap = generateKeyBytes();
-
-        // 加密
-        PublicKey publicKey = restorePublicKey(keyMap.get(PUBLIC_KEY));
-        
-        byte[] encodedText = RSAEncode(publicKey, PLAIN_TEXT.getBytes());
-        System.out.println("RSA encoded: " + Base64.encodeBase64String(encodedText));
-
-        // 解密
-        PrivateKey privateKey = restorePrivateKey(keyMap.get(PRIVATE_KEY));
-        System.out.println("RSA decoded: "
-                + RSADecode(privateKey, encodedText));
+    /**
+     * 初始化时执行生成密钥对操作
+     */
+    public RsaUtil() {
+    	Map<String, byte[]> keyMap = generateKeyBytes();
+    	publicKey = restorePublicKey(keyMap.get(PUBLIC_KEY));
+    	privateKey = restorePrivateKey(keyMap.get(PRIVATE_KEY));
+    }
+    
+    public PublicKey getPublicKey() {
+    	return publicKey;
+    }
+    public PrivateKey getPrivateKey() {
+    	return privateKey;
     }
 
     /**
@@ -164,5 +173,38 @@ public class RsaUtil {
         }
         return null;
 
+    }
+    
+    /**
+     * 得到公钥
+     * @param key 密钥字符串（经过base64编码）
+     * @throws Exception
+     */
+    public static PublicKey getPublicKey(String key) throws Exception {
+          byte[] keyBytes;
+          keyBytes = (new BASE64Decoder()).decodeBuffer(key);
+
+          X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+          KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+          PublicKey publicKey = keyFactory.generatePublic(keySpec);
+          return publicKey;
+    }
+    /**
+     * 得到密钥字符串（经过base64编码）
+     * @return
+     */
+    public static String getKeyString(Key key) throws Exception {
+          byte[] keyBytes = key.getEncoded();
+          String s = (new BASE64Encoder()).encode(keyBytes);
+          return s;
+    }
+    
+    public static String encodedText(String uncoded_text, PublicKey publicKey) {
+    	byte[] encoded_byte = RSAEncode(publicKey, uncoded_text.getBytes());
+    	return Base64.encodeBase64String(encoded_byte);
+    }
+    public static String uncodedText(String  encoded_text, PrivateKey privateKey) {
+    	byte[] encoded_byte = Base64.decodeBase64(encoded_text);
+    	return RSADecode(privateKey, encoded_byte);
     }
 }

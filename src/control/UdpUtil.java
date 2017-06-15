@@ -15,7 +15,7 @@ public class UdpUtil {
 	private InetAddress address;
 	private ThreadCallBack tCallBack;
 	
-	public UdpUtil() {
+	private UdpUtil() {
 		try {
 			address = InetAddress.getByName(multicastHost);  
 			ds = new MulticastSocket(8004);
