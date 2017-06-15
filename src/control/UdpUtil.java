@@ -10,21 +10,6 @@ import model.ThreadCallBack;
 
 public class UdpUtil {
 	
-	public static final int EVERYONE 		= 1;
-	public static final int LOGIN 				= 2;
-	public static final int MESSAGE 			= 3;
-	/** statement of EVERYONE */
-	public static final int ONLINE_ASK 	= 11; //Please reply to me who is online
-	public static final int ONLINE 			= 12; //Someone appeared
-	public static final int OFFLINE 			= 13; //Someone disappeared
-	public static final int ONLINE_FB 		= 14; //I am online
-	/** statement of LOGIN */
-	public static final int REQUEST 			= 21; //Request to login
-	public static final int FEEDBACK 		= 22; //Feedback results
-	/** statement of MESSAGE */
-	public static final int PUBLIC 				= 31; //Everyone can see this information
-	public static final int PRIVATE 			= 32; //Only one person can see this information
-	
 	private static final String multicastHost="224.0.0.1";
 	private static MulticastSocket ds;
 	private InetAddress address;
