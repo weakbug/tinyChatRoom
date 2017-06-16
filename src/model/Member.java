@@ -48,6 +48,11 @@ public class Member {
 		}
 		return false;
 	}
+	@Override
+	public String toString() {
+		String r = nickname + "-" + password + "-" + ipAddress + "-" + publicKey;
+		return r;
+	}
 	
 	/** five getter functions below */
 	public String getNickname() {
