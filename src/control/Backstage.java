@@ -1,4 +1,4 @@
-package server;
+package control;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import control.*;
 import model.*;
@@ -14,8 +15,16 @@ public class Backstage implements ThreadCallBack {
 	
 	private List<Member> loginList;
 	private UdpUtil udpUtil;
+	private int running_mode;
+	public static final int CLIENT_MODE = 1;
+	public static final int SERVER_MODE = 2;
 	
-	public Backstage() {
+	/**
+	 * 实例化后台类并设置后台模式。
+	 * @param mode 执行后台的模式。
+	 */
+	public Backstage(int mode) {
+		running_mode = mode;
 		initialize();
 	}
 	
@@ -65,7 +74,16 @@ public class Backstage implements ThreadCallBack {
 	 * @param msg 回调的字符串信息。
 	 */
 	public void receiveMessage(String msg) {
-		
+		Matcher matcher = MessageHead.first_parse.matcher(msg);
+		if(matcher.find()) {
+			switch( Integer.parseInt(matcher.group(1)) ) {
+			case MessageHead.BROADCAST_ONLINE_ASK :
+				//reply
+				break;
+			case MessageHead.BROADCAST_ONLINE :
+				Member newMember = (Member) RegexUtil.pattern_match(msg, MessageHead.broadcast_online, MessageHead.BROADCAST_ONLINE, null, null, null);
+			}
+		}
 	}
 }
 

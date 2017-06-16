@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 
+import control.Backstage;
 import model.*;
 
 import javax.swing.JScrollPane;
@@ -112,7 +113,7 @@ public class MainWindow {
 		springLayout.putConstraint(SpringLayout.EAST, system_broadcast_button, 0, SpringLayout.EAST, member_scrollPane);
 		frmTinychatroomServer.getContentPane().add(system_broadcast_button);
 		//实例化后台类并自动初始化Udp
-		backstage = new Backstage();
+		backstage = new Backstage(Backstage.SERVER_MODE);
 	}
 	
 	/**
