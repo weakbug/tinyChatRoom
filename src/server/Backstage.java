@@ -32,11 +32,15 @@ public class Backstage implements ThreadCallBack {
 	 * 2. 账号密码与数据表记录相同，'isLogin' 标记已登录，返回 MAYBE_REPEAT 并广播询问登录情况，视广播情况回应广播。（有点难度）
 	 * 3. 账号对应密码不相同，返回 WRONG_PASSWORD。
 	 * 4. 不存在此账号信息，添加到数据表、置 'isLogin' 标记并返回 NEW_ACCOUNT。（即新建账号操作）
+	 * 5. 昵称中存在非法字符，禁止登录，返回 ILLEGAL。
 	 * @param nickname 请求登录的昵称。
 	 * @param password 请求登录的密码（md5）
 	 * @return 
 	 */
 	private int isLogin(String nickname, String password) {
+		if(nickname.contains("-")) {
+			return MessageHead.ILLEGAL;
+		}
 		Member __new = new Member(nickname);
 		int index_of_member = loginList.indexOf(__new);
 		if(index_of_member == -1) { //不存在账号（即新建账号操作）
