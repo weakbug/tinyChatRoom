@@ -53,11 +53,5 @@ public class StringMessage {
 		msg = MessageHead.MESSAGE_FROM_SERVER + "-" + message;
 		return msg;
 	}
-	
-	public static String messagePRIVATE_ON_SERVER(String message){
-		String msg = null;
-		msg = MessageHead.PRIVATE_ON_SERVER+"-" + message;
-		return msg;
-	}
 
 }

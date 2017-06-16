@@ -77,6 +77,7 @@ public class MainWindow {
         colHeader.add("password"); 
         colHeader.add("ip"); 
         colHeader.add("publicKey"); //Ô¤Áô£¬ÓÃÓÚ¼ÓÃÜË½ÁÄ
+        colHeader.add("online?");
         
         Vector<Vector<String>> dataVec = new Vector<Vector<String>>(); 
 		

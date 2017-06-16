@@ -34,6 +34,9 @@ public class Member {
 		this.nickname 	= nickname;
 	}
 	
+	/**
+	 * 如果两个Member实例的nickname相同，此覆写方法将两个实例视为可相等。
+	 */
 	@Override
 	public boolean equals(Object anObject) {
 		if(this == anObject) {
@@ -50,7 +53,7 @@ public class Member {
 	}
 	@Override
 	public String toString() {
-		String r = nickname + "-" + password + "-" + ipAddress + "-" + publicKey;
+		String r = nickname + "-" + (password==null?"null":password) + "-" + (ipAddress==null?"0.0.0.0":ipAddress) + "-" + (publicKey==null?"null":publicKey);
 		return r;
 	}
 	
@@ -70,5 +73,13 @@ public class Member {
 	public boolean isLogin() {
 		return isLogin;
 	}
-	
+	public void setLogin(boolean l) {
+		isLogin = l;
+	}
+	public void setPublicKey(String pk) {
+		publicKey = pk;
+	}
+	public void setIpAddress(String ip) {
+		ipAddress = ip;
+	}
 }

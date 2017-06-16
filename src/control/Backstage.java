@@ -49,24 +49,26 @@ public class Backstage implements ThreadCallBack {
 	 * @param password 请求登录的密码（md5）
 	 * @return 
 	 */
-	private int isLogin(String nickname, String password) {
-		if(nickname.contains(MessageHead.ban_meta)) {
+	private int isLogin(Member _maybe_new) {
+		if(_maybe_new.getNickname().contains(MessageHead.ban_meta)) {
 			return MessageHead.ILLEGAL;
 		}
-		Member __new = new Member(nickname);
-		int index_of_member = loginList.indexOf(__new);
+		int index_of_member = loginList.indexOf(_maybe_new);
 		if(index_of_member == -1) { //不存在账号（即新建账号操作）
+			loginList.add(_maybe_new);
+			_maybe_new.setLogin(true);
 			return MessageHead.NEW_ACCOUNT;
 		}
 		else {
 			Member origin_member = loginList.get(index_of_member);
-			if( !(origin_member.getPassword().equals(password)) ) { //密码错误
+			if( !(origin_member.getPassword().equals(_maybe_new.getPassword())) ) { //密码错误
 				return MessageHead.WRONG_PASSWORD;
 			}
 			else if(origin_member.isLogin()) { //标记正在登录
 				return MessageHead.MAYBE_REPEAT;
 			}
 			else { //正常登录
+				origin_member.setLogin(true);
 				return MessageHead.ALL_RIGHT;
 			}
 		}
@@ -81,28 +83,55 @@ public class Backstage implements ThreadCallBack {
 		if(matcher.find()) {
 			String s = matcher.group(2);
 			switch( Integer.parseInt(matcher.group(1)) ) {
-			case MessageHead.BROADCAST_ONLINE_ASK :
-				if(s.equals(MessageHead.ban_meta)) { //all client want to reply
-					//reply
-				}
-				if(s.equals(thisMember.getNickname())) {
-					//reply(only me)
+			case MessageHead.BROADCAST_ONLINE_ASK : //client receive
+				if(running_mode == CLIENT_MODE) {
+					if(s.equals(MessageHead.ban_meta) || s.equals(thisMember.getNickname())) {
+						udpUtil.sendUdpPacket(StringMessage.messageBROADCAST_ONLINE(thisMember));
+					}
 				}
 				break;
 			case MessageHead.BROADCAST_ONLINE :
 				Member newMember = (Member) RegexUtil.pattern_match(s, MessageHead.parse_member, MessageHead.BROADCAST_ONLINE, null, null, null);
+				int index = loginList.indexOf(newMember);
+				if(running_mode == CLIENT_MODE) {
+					if(index == -1) {
+						loginList.add(newMember);
+						newMember.setLogin(true);
+					}
+				}
+				if(running_mode == SERVER_MODE) {
+					if(index != -1) {
+						loginList.get(index).setLogin(true);
+					}
+					else {
+						loginList.add(newMember);
+						newMember.setLogin(true);
+					}
+				}
 				break;
-			case MessageHead.BROADCAST_OFFLINE :
+			case MessageHead.BROADCAST_OFFLINE : //client receive
 				Member deleteMember = new Member(matcher.group(2));
+				int index2 = loginList.indexOf(deleteMember);
+				if(running_mode == CLIENT_MODE) {
+					
+				}
 				break;
 			case MessageHead.LOGIN_REQUEST : //server mode
-				Member loginMember = (Member) RegexUtil.pattern_match(s, MessageHead.parse_member, MessageHead.LOGIN_REQUEST, null, null, null);
-				int status = isLogin(loginMember.getNickname(), loginMember.getPassword());
-				if(status == MessageHead.NEW_ACCOUNT || status == MessageHead.ALL_RIGHT) {
-					//登录成功
+				if(running_mode == SERVER_MODE) {
+					Member loginMember = (Member) RegexUtil.pattern_match(s, MessageHead.parse_member, MessageHead.LOGIN_REQUEST, null, null, null);
+					int status = isLogin(loginMember);
+					if(status == MessageHead.NEW_ACCOUNT || status == MessageHead.ALL_RIGHT) {
+						//登录成功
+					}
+					if(status == MessageHead.MAYBE_REPEAT) {
+						//超时清除准备
+						
+						//异步执行询问操作
+						udpUtil.sendUdpPacket(StringMessage.messageBROADCAST_ONLINE_ASK(loginMember.getNickname()));
+					}
+					//构造信息字符串并发送。
+					udpUtil.sendUdpPacket(null);
 				}
-				//构造信息字符串并发送。
-				udpUtil.sendUdpPacket(null);
 				break;
 			case MessageHead.LOGIN_FEEDBACK : //client mode(仅完成登录前)
 				int resultOfLogin = (Integer) RegexUtil.pattern_match(s, MessageHead.login_feedback, MessageHead.LOGIN_FEEDBACK, 
@@ -118,7 +147,7 @@ public class Backstage implements ThreadCallBack {
 					String privateString = (String) RegexUtil.pattern_match(s, MessageHead.message_private, MessageHead.PRIVATE_ON_SERVER, null, null, null);
 					//服务端回显
 				}
-				else if(running_mode == CLIENT_MODE) {
+				if(running_mode == CLIENT_MODE) {
 					String privateString = (String) RegexUtil.pattern_match(s, MessageHead.message_private, MessageHead.MESSAGE_PRIVATE, 
 							thisMember.getNickname(), null, thisRsa.getPrivateKey());
 					if(privateString != null) {
@@ -134,6 +163,15 @@ public class Backstage implements ThreadCallBack {
 				break;
 			}
 		}
+		//刷新列表
+	}
+	/**
+	 * 超时清除操作，防止假在线。
+	 * @param originalList
+	 */
+	private void cleanWhenTimeOut(final List<Member> originalList) {
+		List<Member> onlineList = new ArrayList<Member>();
+		
 	}
 }
 
