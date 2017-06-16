@@ -12,9 +12,9 @@ public class MessageHead {
 	/** statement of EVERYONE */
 	public static final int BROADCAST_ONLINE_ASK 	= 11; //Please reply to me if you are online (String(nickname))
 	public static final int BROADCAST_ONLINE 			= 12; //Someone appeared (String(info set))													(\d+)-(\d+)-(.+$)
-	public static final Pattern broadcast_online 		= Pattern.compile("(\\d+)-(\\d+)-(.+$)");
+	public static final Pattern broadcast_online 			= Pattern.compile("(\\d+)-(\\d+)-(.+$)");
 	public static final int BROADCAST_OFFLINE 			= 13; //Someone disappeared (String(nickname))
-	public static final int BROADCAST 	= 14; //I am online (String(nickname))
+	public static final int BROADCAST 							= 14; //I am online (String(nickname))
 	/** statement of LOGIN */
 	public static final int LOGIN_REQUEST 				= 21; //Request to login (String(info set))														(\d+)-(\d+)-(.+$)
 	public static final Pattern login_request 			= broadcast_online;

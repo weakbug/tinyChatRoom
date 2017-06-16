@@ -35,6 +35,7 @@ public class Backstage implements ThreadCallBack {
 	}
 	
 	/**
+	 * server mode
 	 * 给定请求中的参数 'nickname' 'password'，查询数据表，判断是否允许登录。
 	 * 情况分为：
 	 * 1. 账号密码与数据表记录相同，'isLogin' 标记未登录，更改标记并返回 ALL_RIGHT。
@@ -82,6 +83,10 @@ public class Backstage implements ThreadCallBack {
 				break;
 			case MessageHead.BROADCAST_ONLINE :
 				Member newMember = (Member) RegexUtil.pattern_match(msg, MessageHead.broadcast_online, MessageHead.BROADCAST_ONLINE, null, null, null);
+			case MessageHead.BROADCAST_OFFLINE :
+				Member deleteMember = new Member(matcher.group(2));
+			case MessageHead.BROADCAST :
+				
 			}
 		}
 	}
