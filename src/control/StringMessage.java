@@ -7,55 +7,56 @@ public class StringMessage {
 	
 	public static String messageBROADCAST_ONLINE_ASK(String nickname){
 		String msg=null;
-		msg=MessageHead.BROADCAST_ONLINE_ASK+"-"+nickname;
+		msg=MessageHead.BROADCAST_ONLINE_ASK + "-" + nickname;
 		return msg;
 	}
 	
 	public static String messageBROADCAST_ONLINE (Member member){
 		String msg=null;
-		msg = MessageHead.BROADCAST_ONLINE+"-"+member.getInfoSet();
+		msg = MessageHead.BROADCAST_ONLINE + "-" + member.toString();
 		return msg;
 	}
 	
 	public static String messageBROADCAST_OFFLINE(String nickname){
 		String msg=null;
-		msg = MessageHead.BROADCAST_OFFLINE+"-"+nickname;
+		msg = MessageHead.BROADCAST_OFFLINE + "-" + nickname;
 		return msg;
 	}
 	
 	public static String messageLOGIN_REQUEST(Member member){
 		String msg=null;
-		msg = MessageHead.LOGIN_REQUEST+"-"+member.getInfoSet();
+		msg = MessageHead.LOGIN_REQUEST + "-" + member.toString();
 		return msg;
 	}
 	
 	public static String messageLOGIN_FEEDBACK(Member member,Integer state){
 		String msg=null;
-		msg = MessageHead.LOGIN_FEEDBACK+"-"+member.getNickname()+"-"+state.toString()+"-"+member.getPublicKey();
+		msg = MessageHead.LOGIN_FEEDBACK + "-" + member.getNickname() + 
+				   "-" + state.toString() + "-" + member.getPublicKey();
 		return msg;
 	}
 	
 	public static String messageMESSAGE_PUBLIC (String origin,String message){
 		String msg=null;
-		msg = MessageHead.MESSAGE_PUBLIC+"_"+origin+"-"+message;
+		msg = MessageHead.MESSAGE_PUBLIC + "_" + origin + "-" + message;
 		return msg;
 	}
 	
 	public static String messageMESSAGE_PRIVATE(String origin,String target,String message){
 		String msg=null;
-		msg = MessageHead.MESSAGE_PRIVATE+"_"+origin+"-"+target+"-"+message;
+		msg = MessageHead.MESSAGE_PRIVATE + "_" + origin + "-" + target + "-"+message;
 		return msg;
 	}
 	
 	public static String messageMESSAGE_FROM_SERVER(String message){
 		String msg=null;
-		msg = MessageHead.MESSAGE_FROM_SERVER+"_"+message;
+		msg = MessageHead.MESSAGE_FROM_SERVER + "_" + message;
 		return msg;
 	}
 	
 	public static String messagePRIVATE_ON_SERVER(String message){
 		String msg = null;
-		msg = MessageHead.PRIVATE_ON_SERVER+"-"+message;
+		msg = MessageHead.PRIVATE_ON_SERVER+"-" + message;
 		return msg;
 	}
 
