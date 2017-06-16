@@ -7,26 +7,7 @@ public class SqlUtil {
 	private static Connection conn;
 	private static Statement stat;
 	private static PreparedStatement ps = null;
-	public static void main(String args[]){
-		
-		try{
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:test.db");
-			System.out.println("opened database successfully");
-			
-			stat = conn.createStatement();
-			String sql = "CREATE TABLE  IF NOT EXISTS USERINFO"+
-							   "(NICKNAME TEXT PRIMARY KEY  NOT NULL ,"+
-							   "PASSWORD CHAR(20)                 NOT NULL )";
-			stat.executeUpdate(sql);
-			Member test = new Member("test","test","test","test");
-			addUser(test);//启动时默认添加测试帐号
-			selectAllUser();//显示所有帐号及密码
-		}catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-	}
+
 	public static void init(){
 		try{
 			Class.forName("org.sqlite.JDBC");
@@ -70,7 +51,7 @@ public class SqlUtil {
 			e.printStackTrace();
 		}	
 	}
-	//
+	//显示单独用户信息
 	public static void selectUser(String nickName){
 		try{
 			Class.forName("org.sqlite.JDBC");
@@ -90,6 +71,7 @@ public class SqlUtil {
 		}
 		
 	}
+	//显示全部用户信息
 	public static void selectAllUser(){
 		try{
 			Class.forName("org.sqlite.JDBC");
@@ -110,6 +92,7 @@ public class SqlUtil {
 			e.printStackTrace();
 		}
 	}
+	//删除单个用户信息
 	public static void deleteUser(String nickName){
 		try{
 			Class.forName("org.sqlite.JDBC");
@@ -141,5 +124,25 @@ public class SqlUtil {
 			e.printStackTrace();
 		}
 	}
+//	public static void main(String args[]){
+//	
+//	try{
+//		Class.forName("org.sqlite.JDBC");
+//		conn = DriverManager.getConnection("jdbc:sqlite:test.db");
+//		System.out.println("opened database successfully");
+//		
+//		stat = conn.createStatement();
+//		String sql = "CREATE TABLE  IF NOT EXISTS USERINFO"+
+//						   "(NICKNAME TEXT PRIMARY KEY  NOT NULL ,"+
+//						   "PASSWORD CHAR(20)                 NOT NULL )";
+//		stat.executeUpdate(sql);
+//		Member test = new Member("test","test","test","test");
+//		addUser(test);//启动时默认添加测试帐号
+//		selectAllUser();//显示所有帐号及密码
+//	}catch (Exception e) {
+//		// TODO: handle exception
+//		e.printStackTrace();
+//	}
+//}
 		
 }
