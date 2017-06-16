@@ -16,6 +16,8 @@ public class Backstage implements ThreadCallBack {
 	private List<Member> loginList;
 	private UdpUtil udpUtil;
 	private int running_mode;
+	private Member thisMember;
+	private RsaUtil thisRsa;
 	public static final int CLIENT_MODE = 1;
 	public static final int SERVER_MODE = 2;
 	
@@ -48,7 +50,7 @@ public class Backstage implements ThreadCallBack {
 	 * @return 
 	 */
 	private int isLogin(String nickname, String password) {
-		if(nickname.contains("-")) {
+		if(nickname.contains(MessageHead.ban_meta)) {
 			return MessageHead.ILLEGAL;
 		}
 		Member __new = new Member(nickname);
@@ -77,16 +79,59 @@ public class Backstage implements ThreadCallBack {
 	public void receiveMessage(String msg) {
 		Matcher matcher = MessageHead.first_parse.matcher(msg);
 		if(matcher.find()) {
+			String s = matcher.group(2);
 			switch( Integer.parseInt(matcher.group(1)) ) {
 			case MessageHead.BROADCAST_ONLINE_ASK :
-				//reply
+				if(s.equals(MessageHead.ban_meta)) { //all client want to reply
+					//reply
+				}
+				if(s.equals(thisMember.getNickname())) {
+					//reply(only me)
+				}
 				break;
 			case MessageHead.BROADCAST_ONLINE :
-				Member newMember = (Member) RegexUtil.pattern_match(msg, MessageHead.broadcast_online, MessageHead.BROADCAST_ONLINE, null, null, null);
+				Member newMember = (Member) RegexUtil.pattern_match(s, MessageHead.parse_member, MessageHead.BROADCAST_ONLINE, null, null, null);
+				break;
 			case MessageHead.BROADCAST_OFFLINE :
 				Member deleteMember = new Member(matcher.group(2));
-			case MessageHead.BROADCAST :
-				
+				break;
+			case MessageHead.LOGIN_REQUEST : //server mode
+				Member loginMember = (Member) RegexUtil.pattern_match(s, MessageHead.parse_member, MessageHead.LOGIN_REQUEST, null, null, null);
+				int status = isLogin(loginMember.getNickname(), loginMember.getPassword());
+				if(status == MessageHead.NEW_ACCOUNT || status == MessageHead.ALL_RIGHT) {
+					//登录成功
+				}
+				//构造信息字符串并发送。
+				udpUtil.sendUdpPacket(null);
+				break;
+			case MessageHead.LOGIN_FEEDBACK : //client mode(仅完成登录前)
+				int resultOfLogin = (Integer) RegexUtil.pattern_match(s, MessageHead.login_feedback, MessageHead.LOGIN_FEEDBACK, 
+						thisMember.getNickname(), thisMember.getPublicKey(), null);
+				//处理或回显
+				break;
+			case MessageHead.MESSAGE_PUBLIC :
+				String showString = (String) RegexUtil.pattern_match(s, MessageHead.message_public, MessageHead.MESSAGE_PUBLIC, null, null, null);
+				//前台显示字符串。
+				break;
+			case MessageHead.MESSAGE_PRIVATE : //服务器和客户端区分操作
+				if(running_mode == SERVER_MODE) {
+					String privateString = (String) RegexUtil.pattern_match(s, MessageHead.message_private, MessageHead.PRIVATE_ON_SERVER, null, null, null);
+					//服务端回显
+				}
+				else if(running_mode == CLIENT_MODE) {
+					String privateString = (String) RegexUtil.pattern_match(s, MessageHead.message_private, MessageHead.MESSAGE_PRIVATE, 
+							thisMember.getNickname(), null, thisRsa.getPrivateKey());
+					if(privateString != null) {
+						//前台显示字符串。
+					}
+				}
+				break;
+			case MessageHead.MESSAGE_FROM_SERVER : //client mode
+				String serverString = "SERVER : " + s;
+				//前台显示字符串。
+				break;
+			default :
+				break;
 			}
 		}
 	}

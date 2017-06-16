@@ -27,8 +27,11 @@ public class RegexUtil {
 				return matcher.group(1) + " : " + matcher.group(2);
 			case MessageHead.MESSAGE_PRIVATE :
 				if(nickname == matcher.group(2)) {
-					return matcher.group(1) + RsaUtil.uncodedText(matcher.group(3), privateKey);
+					return matcher.group(1) + " : " + RsaUtil.uncodedText(matcher.group(3), privateKey);
 				}
+				return null;
+			case MessageHead.PRIVATE_ON_SERVER :
+				return matcher.group(1) + " : 向 " + matcher.group(2) + " 发送加密消息:\n" + matcher.group(3);
 			default:
 				break;
 			}
