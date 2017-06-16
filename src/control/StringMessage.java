@@ -38,19 +38,19 @@ public class StringMessage {
 	
 	public static String messageMESSAGE_PUBLIC (String origin,String message){
 		String msg=null;
-		msg = MessageHead.MESSAGE_PUBLIC + "_" + origin + "-" + message;
+		msg = MessageHead.MESSAGE_PUBLIC + "-" + origin + "-" + message;
 		return msg;
 	}
 	
 	public static String messageMESSAGE_PRIVATE(String origin,String target,String message){
 		String msg=null;
-		msg = MessageHead.MESSAGE_PRIVATE + "_" + origin + "-" + target + "-"+message;
+		msg = MessageHead.MESSAGE_PRIVATE + "-" + origin + "-" + target + "-"+message;
 		return msg;
 	}
 	
 	public static String messageMESSAGE_FROM_SERVER(String message){
 		String msg=null;
-		msg = MessageHead.MESSAGE_FROM_SERVER + "_" + message;
+		msg = MessageHead.MESSAGE_FROM_SERVER + "-" + message;
 		return msg;
 	}
 	
