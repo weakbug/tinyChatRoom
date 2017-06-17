@@ -39,7 +39,7 @@ public class MessageHead {
 	
 	/** statement of REQUEST or FEEDBACK */
 	public static final int ALL_RIGHT 						= 51;
-	public static final int MAYBE_REPEAT 				= 52;
+	public static final int ONLINE 							= 52;
 	public static final int WRONG_PASSWORD 		= 53;
 	public static final int NEW_ACCOUNT				= 54;
 	public static final int ILLEGAL 							= 55;

@@ -1,10 +1,14 @@
 package client;
 
 import java.awt.EventQueue;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
+
+import model.Member;
+
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -14,7 +18,7 @@ import javax.swing.JTextArea;
  * @author Shinrai
  * 客户端聊天窗口
  */
-public class MainWindow {
+public class ChatWindow {
 
 	private JFrame frmTinychatroom;
 
@@ -31,7 +35,7 @@ public class MainWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainWindow window = new MainWindow();
+					ChatWindow window = new ChatWindow();
 					window.frmTinychatroom.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -43,7 +47,7 @@ public class MainWindow {
 	/**
 	 * Create the application.
 	 */
-	public MainWindow() {
+	public ChatWindow() {
 		initialize();
 	}
 

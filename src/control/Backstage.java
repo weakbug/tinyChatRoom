@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import javax.swing.JTextArea;
+
 import control.*;
 import model.*;
 
@@ -18,6 +20,7 @@ public class Backstage implements ThreadCallBack {
 	private int running_mode;
 	private Member thisMember;
 	private RsaUtil thisRsa;
+	private WindowCallBack windowCallBack;
 	public static final int CLIENT_MODE = 1;
 	public static final int SERVER_MODE = 2;
 	
@@ -25,9 +28,13 @@ public class Backstage implements ThreadCallBack {
 	 * 实例化后台类并设置后台模式。
 	 * @param mode 执行后台的模式。
 	 */
-	public Backstage(int mode) {
+	public Backstage(int mode, WindowCallBack wcb) {
 		running_mode = mode;
+		windowCallBack = wcb;
 		initialize();
+	}
+	public void replaceCallBackInterface(WindowCallBack wcb) {
+		windowCallBack = wcb;
 	}
 	
 	private void initialize() {
@@ -65,7 +72,7 @@ public class Backstage implements ThreadCallBack {
 				return MessageHead.WRONG_PASSWORD;
 			}
 			else if(origin_member.isLogin()) { //标记正在登录
-				return MessageHead.MAYBE_REPEAT;
+				return MessageHead.ONLINE;
 			}
 			else { //正常登录
 				origin_member.setLogin(true);
@@ -83,37 +90,48 @@ public class Backstage implements ThreadCallBack {
 		if(matcher.find()) {
 			String s = matcher.group(2);
 			switch( Integer.parseInt(matcher.group(1)) ) {
-			case MessageHead.BROADCAST_ONLINE_ASK : //client receive
+			case MessageHead.BROADCAST_ONLINE_ASK : //由server发送,client接收
 				if(running_mode == CLIENT_MODE) {
 					if(s.equals(MessageHead.ban_meta) || s.equals(thisMember.getNickname())) {
 						udpUtil.sendUdpPacket(StringMessage.messageBROADCAST_ONLINE(thisMember));
 					}
 				}
 				break;
-			case MessageHead.BROADCAST_ONLINE :
+			case MessageHead.BROADCAST_ONLINE : //由server发送,client接收
 				Member newMember = (Member) RegexUtil.pattern_match(s, MessageHead.parse_member, MessageHead.BROADCAST_ONLINE, null, null, null);
 				int index = loginList.indexOf(newMember);
+				String _0 = newMember.getNickname() + " 进入了聊天室。"; 
 				if(running_mode == CLIENT_MODE) {
 					if(index == -1) {
 						loginList.add(newMember);
 						newMember.setLogin(true);
+						//前台显示字符串。
+						printStringOnScreen(_0);
 					}
 				}
 				if(running_mode == SERVER_MODE) {
 					if(index != -1) {
 						loginList.get(index).setLogin(true);
-					}
-					else {
-						loginList.add(newMember);
-						newMember.setLogin(true);
+						//后台显示字符串。
+						printStringOnScreen(_0);
 					}
 				}
 				break;
-			case MessageHead.BROADCAST_OFFLINE : //client receive
+			case MessageHead.BROADCAST_OFFLINE : //由server发送,client接收
 				Member deleteMember = new Member(matcher.group(2));
+				String _1 = deleteMember.getNickname() + " 离开了聊天室。"; 
 				int index2 = loginList.indexOf(deleteMember);
 				if(running_mode == CLIENT_MODE) {
-					
+					if(index2 == -1) {
+						loginList.remove(index2);
+						printStringOnScreen(_1);
+					}
+				}
+				if(running_mode == SERVER_MODE) {
+					if(index2 == -1) {
+						loginList.get(index2).setLogin(false);
+						printStringOnScreen(_1);
+					}
 				}
 				break;
 			case MessageHead.LOGIN_REQUEST : //server mode
@@ -123,47 +141,71 @@ public class Backstage implements ThreadCallBack {
 					if(status == MessageHead.NEW_ACCOUNT || status == MessageHead.ALL_RIGHT) {
 						//登录成功
 					}
-					if(status == MessageHead.MAYBE_REPEAT) {
+					if(status == MessageHead.ONLINE) {
 						//超时清除准备
-						
-						//异步执行询问操作
-						udpUtil.sendUdpPacket(StringMessage.messageBROADCAST_ONLINE_ASK(loginMember.getNickname()));
+						cleanWhenTimeOut(loginList);
 					}
 					//构造信息字符串并发送。
-					udpUtil.sendUdpPacket(null);
+					String _2 = StringMessage.messageLOGIN_FEEDBACK(loginMember, status);
+					udpUtil.sendUdpPacket(_2);
 				}
 				break;
 			case MessageHead.LOGIN_FEEDBACK : //client mode(仅完成登录前)
 				int resultOfLogin = (Integer) RegexUtil.pattern_match(s, MessageHead.login_feedback, MessageHead.LOGIN_FEEDBACK, 
 						thisMember.getNickname(), thisMember.getPublicKey(), null);
 				//处理或回显
+				if((resultOfLogin == MessageHead.ALL_RIGHT) || (resultOfLogin == MessageHead.NEW_ACCOUNT)) {
+					//登录成功，跳转界面
+				}
+				else {
+					//显示错误信息
+					String _3 = null;
+					switch(resultOfLogin) {
+					case MessageHead.ONLINE :
+						_3 = "此账号已登录。";
+						break;
+					case MessageHead.WRONG_PASSWORD :
+						_3 = "密码错误。";
+						break;
+					case MessageHead.ILLEGAL :
+						_3 = "昵称含非法字符“-”。";
+						break;
+					default:
+					}
+					//将字符串填充至登录界面的label
+					
+				}
 				break;
 			case MessageHead.MESSAGE_PUBLIC :
 				String showString = (String) RegexUtil.pattern_match(s, MessageHead.message_public, MessageHead.MESSAGE_PUBLIC, null, null, null);
 				//前台显示字符串。
+				printStringOnScreen(showString);
 				break;
 			case MessageHead.MESSAGE_PRIVATE : //服务器和客户端区分操作
 				if(running_mode == SERVER_MODE) {
-					String privateString = (String) RegexUtil.pattern_match(s, MessageHead.message_private, MessageHead.PRIVATE_ON_SERVER, null, null, null);
+					String privateStringOnServer = (String) RegexUtil.pattern_match(s, MessageHead.message_private, MessageHead.PRIVATE_ON_SERVER, null, null, null);
 					//服务端回显
+					printStringOnScreen(privateStringOnServer);
 				}
 				if(running_mode == CLIENT_MODE) {
 					String privateString = (String) RegexUtil.pattern_match(s, MessageHead.message_private, MessageHead.MESSAGE_PRIVATE, 
 							thisMember.getNickname(), null, thisRsa.getPrivateKey());
 					if(privateString != null) {
 						//前台显示字符串。
+						printStringOnScreen(privateString);
 					}
 				}
 				break;
 			case MessageHead.MESSAGE_FROM_SERVER : //client mode
 				String serverString = "SERVER : " + s;
 				//前台显示字符串。
+				printStringOnScreen(serverString);
 				break;
 			default :
-				break;
 			}
 		}
 		//刷新列表
+		
 	}
 	/**
 	 * 超时清除操作，防止假在线。
@@ -171,6 +213,13 @@ public class Backstage implements ThreadCallBack {
 	 */
 	private void cleanWhenTimeOut(final List<Member> originalList) {
 		List<Member> onlineList = new ArrayList<Member>();
+		
+	}
+	
+	private void printStringOnScreen(String s) {
+		
+	}
+	public void login() {
 		
 	}
 }

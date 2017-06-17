@@ -22,7 +22,7 @@ import javax.swing.JButton;
  * @author Shinrai
  * 服务端显示窗口。
  */
-public class MainWindow {
+public class MainWindow implements WindowCallBack {
 
 	private JFrame 		frmTinychatroomServer;
 	private JTable 			member_detail_table;
@@ -35,7 +35,7 @@ public class MainWindow {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void _main() {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Exception e1) {
@@ -71,6 +71,9 @@ public class MainWindow {
 		frmTinychatroomServer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
 		frmTinychatroomServer.getContentPane().setLayout(springLayout);
+		
+		//实例化后台类并自动初始化Udp
+		backstage = new Backstage(Backstage.SERVER_MODE, this);
 		
 		Vector<String> colHeader = new Vector<String>(); 
         colHeader.add("nickname"); 
@@ -113,14 +116,18 @@ public class MainWindow {
 		springLayout.putConstraint(SpringLayout.EAST, system_broadcast_inputArea, -6, SpringLayout.WEST, system_broadcast_button);
 		springLayout.putConstraint(SpringLayout.EAST, system_broadcast_button, 0, SpringLayout.EAST, member_scrollPane);
 		frmTinychatroomServer.getContentPane().add(system_broadcast_button);
-		//实例化后台类并自动初始化Udp
-		backstage = new Backstage(Backstage.SERVER_MODE);
+		
 	}
-	
-	/**
-	 * 刷新列表
-	 */
-	public void list_refresh(List<Member> member_list) {
+
+	@Override
+	public void nextStep() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void textAreaAppend() {
+		// TODO Auto-generated method stub
 		
 	}
 }

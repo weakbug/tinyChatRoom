@@ -5,26 +5,35 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
+
+import control.Backstage;
+import model.WindowCallBack;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
+import javax.swing.JTextArea;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * @author Shinrai
  * 客户端登录窗口
  */
-public class LoginWindow {
+public class LoginWindow implements WindowCallBack {
 
 	private JFrame frmLogin;
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private JButton login_button;
+	private JTextArea loginFeedbackTextArea;
+	private Backstage backstage;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void _main() {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Exception e1) {
@@ -63,6 +72,9 @@ public class LoginWindow {
 		SpringLayout springLayout = new SpringLayout();
 		frmLogin.getContentPane().setLayout(springLayout);
 		
+		//实例化后台类并自动初始化Udp
+		backstage = new Backstage(Backstage.CLIENT_MODE, this);
+		
 		JLabel user_label = new JLabel("User name");
 		springLayout.putConstraint(SpringLayout.NORTH, user_label, 10, SpringLayout.NORTH, frmLogin.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, user_label, 10, SpringLayout.WEST, frmLogin.getContentPane());
@@ -93,8 +105,32 @@ public class LoginWindow {
 		frmLogin.getContentPane().add(passwordField);
 		
 		login_button = new JButton("Login");
+		login_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		springLayout.putConstraint(SpringLayout.SOUTH, login_button, -10, SpringLayout.SOUTH, frmLogin.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, login_button, -10, SpringLayout.EAST, frmLogin.getContentPane());
 		frmLogin.getContentPane().add(login_button);
+		
+		loginFeedbackTextArea = new JTextArea();
+		springLayout.putConstraint(SpringLayout.NORTH, loginFeedbackTextArea, 6, SpringLayout.SOUTH, passwordField);
+		springLayout.putConstraint(SpringLayout.WEST, loginFeedbackTextArea, 10, SpringLayout.WEST, frmLogin.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, loginFeedbackTextArea, 0, SpringLayout.SOUTH, login_button);
+		springLayout.putConstraint(SpringLayout.EAST, loginFeedbackTextArea, 218, SpringLayout.WEST, frmLogin.getContentPane());
+		frmLogin.getContentPane().add(loginFeedbackTextArea);
+	}
+
+	@Override
+	public void nextStep() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void textAreaAppend() {
+		// TODO Auto-generated method stub
+		
 	}
 }
