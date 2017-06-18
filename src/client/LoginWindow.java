@@ -7,6 +7,7 @@ import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 
 import control.Backstage;
+import model.Member;
 import model.WindowCallBack;
 
 import javax.swing.JLabel;
@@ -29,6 +30,7 @@ public class LoginWindow implements WindowCallBack {
 	private JButton login_button;
 	private JTextArea loginFeedbackTextArea;
 	private Backstage backstage;
+	private Member member;
 
 	/**
 	 * Launch the application.
@@ -125,12 +127,13 @@ public class LoginWindow implements WindowCallBack {
 	@Override
 	public void nextStep() {
 		// TODO Auto-generated method stub
-		
+		ChatWindow._main(backstage);
+		frmLogin.dispose();
 	}
 
 	@Override
-	public void textAreaAppend() {
+	public void textAreaAppend(String s) {
 		// TODO Auto-generated method stub
-		
+		loginFeedbackTextArea.append(s + "\n");
 	}
 }

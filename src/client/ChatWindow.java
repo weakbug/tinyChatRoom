@@ -7,7 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 
+import control.Backstage;
 import model.Member;
+import model.WindowCallBack;
 
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -18,14 +20,16 @@ import javax.swing.JTextArea;
  * @author Shinrai
  * 客户端聊天窗口
  */
-public class ChatWindow {
+public class ChatWindow implements WindowCallBack {
 
 	private JFrame frmTinychatroom;
+	private Backstage backstage;
+	private JTextArea chat_textArea;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void _main(final Backstage backstage) {
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (Exception e1) {
@@ -35,7 +39,7 @@ public class ChatWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ChatWindow window = new ChatWindow();
+					ChatWindow window = new ChatWindow(backstage);
 					window.frmTinychatroom.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +51,9 @@ public class ChatWindow {
 	/**
 	 * Create the application.
 	 */
-	public ChatWindow() {
+	public ChatWindow(Backstage backstage) {
+		this.backstage = backstage;
+		this.backstage.replaceCallBackInterface(this);
 		initialize();
 	}
 
@@ -93,8 +99,20 @@ public class ChatWindow {
 		inputArea_scrollPane.setViewportView(client_inputArea);
 		springLayout.putConstraint(SpringLayout.EAST, send_button, 0, SpringLayout.EAST, chat_window_scrollPane);
 		
-		JTextArea chat_textArea = new JTextArea();
+		chat_textArea = new JTextArea();
 		chat_window_scrollPane.setViewportView(chat_textArea);
 		frmTinychatroom.getContentPane().add(send_button);
+	}
+
+	@Override
+	public void nextStep() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void textAreaAppend(String s) {
+		// TODO Auto-generated method stub
+		chat_textArea.append(s + "\n");
 	}
 }

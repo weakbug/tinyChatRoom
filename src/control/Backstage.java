@@ -117,7 +117,7 @@ public class Backstage implements ThreadCallBack {
 					}
 				}
 				break;
-			case MessageHead.BROADCAST_OFFLINE : //由server发送,client接收
+			case MessageHead.BROADCAST_OFFLINE : //由client发送,其他端接收
 				Member deleteMember = new Member(matcher.group(2));
 				String _1 = deleteMember.getNickname() + " 离开了聊天室。"; 
 				int index2 = loginList.indexOf(deleteMember);
@@ -156,6 +156,7 @@ public class Backstage implements ThreadCallBack {
 				//处理或回显
 				if((resultOfLogin == MessageHead.ALL_RIGHT) || (resultOfLogin == MessageHead.NEW_ACCOUNT)) {
 					//登录成功，跳转界面
+					windowCallBack.nextStep();
 				}
 				else {
 					//显示错误信息
@@ -173,7 +174,7 @@ public class Backstage implements ThreadCallBack {
 					default:
 					}
 					//将字符串填充至登录界面的label
-					
+					printStringOnScreen(_3);
 				}
 				break;
 			case MessageHead.MESSAGE_PUBLIC :
@@ -217,10 +218,10 @@ public class Backstage implements ThreadCallBack {
 	}
 	
 	private void printStringOnScreen(String s) {
-		
+		windowCallBack.textAreaAppend(s);
 	}
 	public void login() {
-		
+		udpUtil.sendUdpPacket(StringMessage.messageLOGIN_REQUEST(thisMember));
 	}
 }
 

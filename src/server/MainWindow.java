@@ -126,8 +126,8 @@ public class MainWindow implements WindowCallBack {
 	}
 
 	@Override
-	public void textAreaAppend() {
+	public void textAreaAppend(String s) {
 		// TODO Auto-generated method stub
-		
+		server_outputArea.append(s + "\n");
 	}
 }

@@ -7,5 +7,5 @@ package model;
  */
 public interface WindowCallBack {
 	public void nextStep(); //进入下一个操作
-	public void textAreaAppend(); //文本框追加文本
+	public void textAreaAppend(String s); //文本框追加文本
 }
